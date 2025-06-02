@@ -1,6 +1,6 @@
 module.exports = {
   name: 'hidetag',
-  command: ['hidetag', 'h'],
+  command: ['hidetag', 'woi'],
   tags: 'Group Menu',
   desc: 'Tag semua anggota grup',
   prefix: true,
@@ -39,7 +39,7 @@ module.exports = {
       await conn.sendMessage(chatId, {
         text: textToSend,
         mentions: groupMetadata.participants.map(p => p.id)
-      }, { quoted: message });
+      });
     } catch (err) {
       console.error(err);
       conn.sendMessage(chatId, { text: '❌ Gagal mengirim pesan.' }, { quoted: message });
