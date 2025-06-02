@@ -47,17 +47,15 @@ module.exports = {
         buffer = Buffer.concat([buffer, chunk]);
       }
 
-      const imageUrl = await webp2png(buffer);
-      const pngBuffer = await downloadBufferFromUrl(imageUrl);
-
-      await conn.updateProfilePicture(conn.user.id, pngBuffer);
+      const url = await webp2png(buffer);
+      await conn.updateProfilePicture(conn.user.id, { url });
 
       conn.sendMessage(chatId, {
-        text: "✅ Foto profil bot berhasil diperbarui (gambar panjang)!"
+        text: "✅ Foto profil bot berhasil diperbarui!"
       }, { quoted: message });
 
     } catch (error) {
-      console.error(error);
+      console.error("❌ Error saat setpp:", error);
       conn.sendMessage(chatId, {
         text: "❌ Terjadi kesalahan saat memperbarui foto profil bot."
       }, { quoted: message });
@@ -65,7 +63,7 @@ module.exports = {
   }
 };
 
-// 🔄 Fungsi konversi WebP ke PNG via EZGIF
+// Fungsi konversi WebP ke PNG via EZGIF
 async function webp2png(source) {
   const agent = new https.Agent({ rejectUnauthorized: false });
 
@@ -82,14 +80,17 @@ async function webp2png(source) {
   const html = await res.text();
   const { document } = new JSDOM(html).window;
 
+  const fileInput = document.querySelector('form input[name="file"]');
+  if (!fileInput) throw '❌ Tahap 1 gagal: Tidak menemukan input file di form EZGIF.';
+
+  const fileValue = fileInput.value;
+
   const form2 = new FormData();
-  let obj = {};
   for (let input of document.querySelectorAll('form input[name]')) {
-    obj[input.name] = input.value;
     form2.append(input.name, input.value);
   }
 
-  const res2 = await fetch(`https://ezgif.com/webp-to-png/${obj.file}`, {
+  const res2 = await fetch(`https://ezgif.com/webp-to-png/${fileValue}`, {
     method: 'POST',
     body: form2,
     agent
@@ -97,16 +98,9 @@ async function webp2png(source) {
 
   const html2 = await res2.text();
   const { document: document2 } = new JSDOM(html2).window;
-  const img = document2.querySelector('div#output > p.outfile > img');
 
-  if (!img) throw new Error("❌ Gagal mendapatkan gambar hasil konversi!");
+  const img = document2.querySelector('div#output > p.outfile > img');
+  if (!img?.src) throw '❌ Gagal mendapatkan gambar hasil konversi!';
 
   return new URL(img.src, res2.url).toString();
-}
-
-// 📥 Fungsi download buffer dari URL
-async function downloadBufferFromUrl(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Gagal download hasil PNG dari EZGIF`);
-  return Buffer.from(await res.arrayBuffer());
 }
