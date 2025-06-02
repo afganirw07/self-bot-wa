@@ -152,7 +152,7 @@ async function tryPrem(nomor) {
     if (value.claim) {
       return {
         success: false,
-        message: '⚠️ Kamu sudah pernah claim trial premium.',
+        message: 'Kamu sudah pernah claim trial premium.',
         claimable: false
       };
     }
