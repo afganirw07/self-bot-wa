@@ -1,4 +1,6 @@
-const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
+const fs = require('fs');
+const path = require('path');
+const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 
 module.exports = {
   name: 'setpp',
@@ -14,39 +16,58 @@ module.exports = {
       const mtype = Object.keys(message.message || {})[0];
 
       let mediaMessage;
-      if (mtype === "imageMessage") {
+      if (mtype === 'imageMessage') {
         mediaMessage = message.message.imageMessage;
       } else if (
-        mtype === "extendedTextMessage" &&
+        mtype === 'extendedTextMessage' &&
         message.message.extendedTextMessage.contextInfo?.quotedMessage?.imageMessage
       ) {
         mediaMessage = message.message.extendedTextMessage.contextInfo.quotedMessage.imageMessage;
       }
 
       if (!mediaMessage) {
-        return conn.sendMessage(chatId, {
-          text: `📷 *Cara menggunakan perintah:*\n\nKirim gambar dengan caption atau reply gambar dengan perintah:\n\`${prefix}${commandText}\``
-        }, { quoted: message });
+        return conn.sendMessage(
+          chatId,
+          {
+            text: `📷 *Cara menggunakan perintah:*\n\nKirim gambar dengan caption atau reply gambar dengan perintah:\n\`${prefix}${commandText}\``,
+          },
+          { quoted: message }
+        );
       }
 
-      const stream = await downloadContentFromMessage(mediaMessage, "image");
-      let buffer = Buffer.from([]);
+      const stream = await downloadContentFromMessage(mediaMessage, 'image');
+
+      // Simpan ke file temporer
+      const tmpFile = path.join(__dirname, `temp_pp_${Date.now()}.jpg`);
+      const writeStream = fs.createWriteStream(tmpFile);
+
       for await (const chunk of stream) {
-        buffer = Buffer.concat([buffer, chunk]);
+        writeStream.write(chunk);
       }
+      await new Promise((resolve) => writeStream.end(resolve));
 
-      // Langsung update profile picture pakai buffer (tanpa upload ke EZGIF)
-      await conn.updateProfilePicture(conn.user.id, { buffer });
+      // Update profile picture dari file stream
+      const fileStream = fs.createReadStream(tmpFile);
 
-      await conn.sendMessage(chatId, {
-        text: "✅ Foto profil bot berhasil diperbarui tanpa crop!"
-      }, { quoted: message });
+      await conn.updateProfilePicture(conn.user.id, { stream: fileStream });
 
+      // Hapus file temporer setelah update
+      fs.unlink(tmpFile, (err) => {
+        if (err) console.error('Gagal hapus file temporer:', err);
+      });
+
+      await conn.sendMessage(
+        chatId,
+        { text: '✅ Foto profil bot berhasil diperbarui tanpa crop!' },
+        { quoted: message }
+      );
     } catch (error) {
-      console.error("❌ Error saat setpp:", error);
-      await conn.sendMessage(chatId, {
-        text: "❌ Terjadi kesalahan saat memperbarui foto profil bot."
-      }, { quoted: message });
+      console.error('❌ Error saat setpp:', error);
+      await conn.sendMessage(
+        chatId,
+        { text: '❌ Terjadi kesalahan saat memperbarui foto profil bot.' },
+        { quoted: message }
+      );
     }
-  }
+  },
 };
