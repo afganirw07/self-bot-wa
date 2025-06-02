@@ -1,4 +1,3 @@
-const fs = require("fs");
 const https = require("https");
 const fetch = require("node-fetch");
 const { JSDOM } = require("jsdom");
@@ -13,13 +12,7 @@ module.exports = {
   prefix: true,
   owner: true,
 
-  run: async (conn, message, {
-    chatInfo,
-    textMessage,
-    prefix,
-    commandText,
-    args
-  }) => {
+  run: async (conn, message, { chatInfo, prefix, commandText }) => {
     const { chatId } = chatInfo;
     const mtype = Object.keys(message.message || {})[0];
 
@@ -41,13 +34,14 @@ module.exports = {
 
     try {
       const stream = await downloadContentFromMessage(mediaMessage, "image");
-
       let buffer = Buffer.from([]);
       for await (const chunk of stream) {
         buffer = Buffer.concat([buffer, chunk]);
       }
 
+      // Convert buffer ke PNG url via EZGIF
       const url = await webp2png(buffer);
+
       await conn.updateProfilePicture(conn.user.id, { url });
 
       conn.sendMessage(chatId, {
@@ -63,12 +57,21 @@ module.exports = {
   }
 };
 
-// Fungsi konversi WebP ke PNG via EZGIF
+// Fungsi konversi WebP ke PNG via EZGIF, sudah perbaikan dari buffer ke ArrayBuffer
 async function webp2png(source) {
   const agent = new https.Agent({ rejectUnauthorized: false });
 
+  // Convert Buffer ke ArrayBuffer manual
+  let arrayBuffer;
+  if (Buffer.isBuffer(source)) {
+    arrayBuffer = source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength);
+  } else {
+    throw new Error("Input source must be a Buffer");
+  }
+
   const form = new FormData();
-  const blob = new Blob([source]);
+  const blob = new Blob([arrayBuffer], { type: 'image/webp' });
+  form.append('new-image-url', '');   // kosongkan URL karena kita upload file
   form.append('new-image', blob, 'image.webp');
 
   const res = await fetch('https://s6.ezgif.com/webp-to-png', {
