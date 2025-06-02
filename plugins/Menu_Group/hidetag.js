@@ -19,7 +19,7 @@ module.exports = {
 
     const { userAdmin } = await stGrup(conn, chatId, senderId);
 
-    if (!userAdmin) {
+    if (userAdmin) {
       return conn.sendMessage(chatId, { text: '❌ Kamu bukan Admin!' }, { quoted: message });
     }
 
