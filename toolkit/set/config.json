@@ -31,8 +31,8 @@
       "music": ""
     },
     "autoread": {
-      "group":  true,
-      "private": true
+      "group":  false,
+      "private": false
     },
     "Mode": "off",
     "autoTyping": false,
