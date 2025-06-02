@@ -61,7 +61,7 @@ module.exports = {
 async function webp2png(source) {
   const agent = new https.Agent({ rejectUnauthorized: false });
 
-  // Convert Buffer ke ArrayBuffer manual
+  // Convert Buffer ke ArrayBuffer
   let arrayBuffer;
   if (Buffer.isBuffer(source)) {
     arrayBuffer = source.buffer.slice(source.byteOffset, source.byteOffset + source.byteLength);
@@ -71,7 +71,9 @@ async function webp2png(source) {
 
   const form = new FormData();
   const blob = new Blob([arrayBuffer], { type: 'image/webp' });
-  form.append('new-image-url', '');   // kosongkan URL karena kita upload file
+
+  // Isi new-image-url dengan kosong, karena kita upload file bukan URL
+  form.append('new-image-url', '');
   form.append('new-image', blob, 'image.webp');
 
   const res = await fetch('https://s6.ezgif.com/webp-to-png', {
@@ -107,3 +109,4 @@ async function webp2png(source) {
 
   return new URL(img.src, res2.url).toString();
 }
+
