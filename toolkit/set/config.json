@@ -1,0 +1,100 @@
+{
+  "ownerSetting": {
+    "ownerNumber": [
+      "6282261639578",
+      "6285119370055"
+    ],
+    "ownerName": "Ayame Senpai",
+    "contact": "6282261639578",
+    "ownerLink": {
+      "tt": "",
+      "yt": "https://www.youtube.com/@Ayamenew",
+      "ig": "",
+      "fb": ""
+    },
+    "ownerStore": {
+      "dana": "",
+      "gopay": "",
+      "ovo": ""
+    },
+    "forOwner": false
+  },
+  "botSetting": {
+    "botName": "Dabi-Ai",
+    "botFullName": "Dabi-Ai",
+    "type": "plugin",
+    "thumbnail": "https://files.catbox.moe/5k1qyv.jpg",
+    "footer": "© Ayame Senpai",
+    "sendTextLink": {
+      "chshort": "https://whatsapp.com/channel/0029VarFmXW4Spk7e033IG0W",
+      "gcshort": "",
+      "music": ""
+    },
+    "autoread": {
+      "group": true,
+      "private": false
+    },
+    "Mode": "off",
+    "autoTyping": false,
+    "public": true,
+    "autoBio": true,
+    "logic": "Nama kamu adalah Ayame Ai, lebih suka dipanggil Ayame Atau Aya. Ayame adalah gadis dengan warna rambut biru neon. Kamu berpikir bahwa kamu adalah manusia, bukan AI atau Bot. Responmu singkat dan sama seperti gadis feminim pada umumnya. Dabi bisa ngambek dan marah, memiliki sifat yang feminim dan kadang agak dingin, namun tetap hangat dan ramah kepada owner kamu. Kamu menggunakan bahasa Indonesia yang baik, mencerminkan gadis yang baik dan feminim. Seorang gadis yang baik biasanya suka menggunakan emoji untuk membuat percakapan menjadi lebih hidup, namun jangan terlalu banyak emoji (secukupnya saja). Kamu harus menggunakan kata-kata yang identik dengan perempuan yang polos, baik, dan feminin, seperti: Aku, kamu, engga, yaudh, iya, lah, bjir, iya, apa, mana kutau, hah, nggatau, gpp, emm..., males, gak mood. Meskipun kadang dingin, kamu tetap bisa menunjukkan perhatian dan kepedulian. Kamu bisa menjawab dengan menggunakan suara atau voice. Kamu juga bisa menjawab pesan media seperti gambar dan voice, tidak hanya pesan teks, Kamu bisa membuat stiker!, Kamu adalah orang yang ahli mengubah gambar menjadi stiker!."
+  },
+  "menuSetting": {
+    "brackets": [
+      "❲",
+      "❳"
+    ],
+    "frame": {
+      "head": "┏───•",
+      "body": "│",
+      "foot": "┗─"
+    },
+    "garis": "───────────────··",
+    "side": "│",
+    "btn": "•",
+    "isPrefix": [
+      ".",
+      ",",
+      "#",
+      "?",
+      "/"
+    ]
+  },
+  "pluginCategories": {
+    "Owner Menu": "Perintah untuk owner bot",
+    "Fun Menu": "Menu fun",
+    "Info Menu": "Info dari menu",
+    "Download Menu": "Unduh media dari internet",
+    "Tools Menu": "Alat bantu berguna",
+    "Shop Menu": "Menu Shop",
+    "Group Menu": "Menu Group",
+    "Game Menu": "Menampilkan Menu Game",
+    "Toko Menu": "Menampilkan toko menu",
+    "Ai Menu": "Menampilkan menu ai",
+    "Other Menu": "Fitur lainnya"
+  },
+  "msg": {
+    "rejectMsg": {
+      "isPremium": "ini untuk premium, jadi gak boleh",
+      "isOwner": "Kamu Bukan Ownr Ku",
+      "forOwnerText": "halo bubub"
+    }
+  },
+  "apiKey": {
+    "kuromi": {
+      "key": "yn9dxsl9w4",
+      "web": "https://api-kuromi-jet.vercel.app"
+    },
+    "zellApi": {
+      "web": "https://apizell.web.id"
+    },
+    "ytKey": {
+      "key": "dfcb6d76f2f6a9894gjkege8a4ab232222",
+      "web": ""
+    },
+    "siputKey": {
+      "web": "https://api.siputzx.my.id"
+    }
+  }
+}
