@@ -17,11 +17,11 @@ module.exports = {
       return conn.sendMessage(chatId, { text: '⚠️ Perintah ini hanya bisa digunakan dalam grup!' }, { quoted: message });
     }
 
-    // const { userAdmin } = await stGrup(conn, chatId, senderId);
+    const { userAdmin } = await stGrup(conn, chatId, senderId);
 
-    // if (!userAdmin || userAdmin) {
-    //   return conn.sendMessage(chatId, { text: '❌ Kamu bukan Admin!' }, { quoted: message });
-    // }
+    if (!userAdmin) {
+      return conn.sendMessage(chatId, { text: '❌ Kamu bukan Admin!' }, { quoted: message });
+    }
 
     const textToSend = args.join(' ');
     if (!textToSend) {
